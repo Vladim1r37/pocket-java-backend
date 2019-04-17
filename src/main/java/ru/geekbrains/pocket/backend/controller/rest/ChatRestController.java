@@ -31,7 +31,7 @@ public class ChatRestController {
         User user = httpRequestComponent.getUserFromToken(request);
         List<UserChat> userChats;
         if (user != null) {
-            userChats = userChatService.getUserChats(user);
+            userChats = userChatService.getUserChats(user, offset);
             return new ResponseEntity<>(new UserChatCollection(offset, userChats), HttpStatus.OK);
         }
         else

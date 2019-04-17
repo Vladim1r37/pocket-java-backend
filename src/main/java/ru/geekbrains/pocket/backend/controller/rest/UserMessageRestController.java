@@ -30,7 +30,7 @@ public class UserMessageRestController {
         User user = userService.getUserById(new ObjectId(idUser));
         List<UserMessage> messages;
         if (user != null) {
-            messages = userMessageService.getAllMessagesUser(user);
+            messages = userMessageService.getAllMessagesUser(user, offset);
 
             MessageCollection messageCollection = new MessageCollection();
             messageCollection.setUserMessages(offset, messages);

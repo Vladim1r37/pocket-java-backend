@@ -8,9 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.geekbrains.pocket.backend.domain.db.Privilege;
-import ru.geekbrains.pocket.backend.domain.db.Role;
 import ru.geekbrains.pocket.backend.domain.db.User;
+import ru.geekbrains.pocket.backend.enumeration.Privilege;
+import ru.geekbrains.pocket.backend.enumeration.Role;
 import ru.geekbrains.pocket.backend.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,19 +32,19 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
-        final String ip = getClientIP();
-        if (loginAttemptService.isBlocked(ip)) {
-            throw new RuntimeException("blocked");
-        }
-
+//        final String ip = getClientIP();
+//        if (loginAttemptService.isBlocked(ip)) {
+//            throw new RuntimeException("blocked");
+//        }
+//
         try {
             User user = Optional.of(userRepository.findByEmail(email)).orElseThrow(
                     () -> new UsernameNotFoundException("Invalid email or password"));
             //("No user found with username: " + email)
 
             return new org.springframework.security.core.userdetails
-                    .User(user.getEmail(), user.getPassword(), user.isEnabled(),
-                    true, true, true, getAuthorities(user.getRoles()));
+                    .User(user.getEmail(), user.getPassword(), true,
+                    true, true, true, getAuthorities(Role.getRoleUser()));
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
@@ -63,7 +63,7 @@ public class MyUserDetailsService implements UserDetailsService {
             collection.addAll(role.getPrivileges());
         }
         for (final Privilege item : collection) {
-            privileges.add(item.getName());
+            privileges.add(item.toString());
         }
 
         return privileges;

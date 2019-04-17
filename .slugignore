@@ -1,0 +1,5 @@
+*.psd
+*.pdf
+/test
+/spec
+/js_for_mongodb

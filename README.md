@@ -2,26 +2,20 @@
 
 ## RESTfull backend api
 
-are used 
 \
-Spring Boot, Spring Data MongoDB, 
+Spring Boot, Spring Security
 \
-Spring Web, 
-Spring Data Rest, Spring HATEOAS, Spring Websocket, 
+Spring Data Rest, Spring Websocket, 
 \
-Spring Security
+Spring Data MongoDB, 
 \
-Lombok, Slf4j,
+Lombok, Log4j2,
 \
 HTTPS (SSL/TLS) & tomcat.keystore,
 \
 OAuth2Configuration
 
 
-http (80) redirect to https (8888)
 \
+https://java-api.pocketmsg.ru
 http://localhost:8888
-\
-https://localhost:8888
-
-OAuth2Configuration пока отключена (не работает)

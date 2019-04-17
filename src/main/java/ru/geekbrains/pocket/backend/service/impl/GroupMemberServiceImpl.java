@@ -2,6 +2,10 @@ package ru.geekbrains.pocket.backend.service.impl;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.pocket.backend.domain.db.Group;
 import ru.geekbrains.pocket.backend.domain.db.GroupMember;
@@ -64,8 +68,11 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     }
 
     @Override
-    public List<GroupMember> getGroupMembers(ObjectId id) {
-        return repository.findByGroupId(id);
+    public List<GroupMember> getGroupMembers(ObjectId id, Integer offset) {
+        Pageable pageable = PageRequest.of(offset, 10,
+                Sort.by(Sort.Direction.ASC,"username", "group"));
+        Page<GroupMember> page = repository.findByGroupId(id, pageable);
+        return page.getContent();
     }
 
     @Override

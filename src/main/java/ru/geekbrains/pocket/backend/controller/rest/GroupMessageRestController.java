@@ -26,7 +26,7 @@ public class GroupMessageRestController {
 
     @GetMapping("/{idGroup}/messages") //Получить историю переписки
     public ResponseEntity<?> getMessages(@PathVariable String idGroup, @RequestParam("offset") Integer offset) {
-        List<GroupMessage> messages = groupMessageService.getMessages(new ObjectId(idGroup));
+        List<GroupMessage> messages = groupMessageService.getMessages(new ObjectId(idGroup), offset);
         if (messages != null) {
             MessageCollection messageCollection = new MessageCollection();
             messageCollection.setGroupMessages(offset, messages);

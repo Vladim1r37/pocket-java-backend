@@ -23,7 +23,6 @@ import ru.geekbrains.pocket.backend.domain.pub.MessagePub;
 import ru.geekbrains.pocket.backend.service.GroupMessageService;
 import ru.geekbrains.pocket.backend.service.GroupService;
 import ru.geekbrains.pocket.backend.service.UserService;
-import ru.geekbrains.pocket.backend.service.UserTokenService;
 
 import java.nio.charset.Charset;
 
@@ -46,8 +45,8 @@ public class GroupMessageRestControllerTest {
     private WebApplicationContext webApplicationContext;
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserTokenService userTokenService;
+//    @Autowired
+//    private UserTokenService userTokenService;
     @Autowired
     private GroupService groupService;
     @Autowired
@@ -141,7 +140,8 @@ public class GroupMessageRestControllerTest {
         userService.delete(email);
         User user = userService.createUserAccount(email, password, username);
         try {
-            token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
+            token = userService.getNewToken(user);
+//            token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
             log.debug(token);
         } catch (Exception ex) {
             log.debug(ex.getMessage());

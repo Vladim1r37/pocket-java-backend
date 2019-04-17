@@ -2,15 +2,17 @@ package ru.geekbrains.pocket.backend.service.impl;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.pocket.backend.domain.db.User;
 import ru.geekbrains.pocket.backend.domain.db.UserContact;
 import ru.geekbrains.pocket.backend.repository.UserContactRepository;
-import ru.geekbrains.pocket.backend.repository.UserRepository;
 import ru.geekbrains.pocket.backend.service.UserContactService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserContactServiselmpl implements UserContactService {
@@ -69,6 +71,20 @@ public class UserContactServiselmpl implements UserContactService {
     @Override
     public List<UserContact> getUserContacts(User user) {
         return repository.findByUser(user);
+    }
+
+    @Override
+    public List<UserContact> getUserContacts(User user, Integer offset) {
+//        Pageable pageable = PageRequest.of(offset, 10);
+//        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "contact"));
+        //PageRequest request = new PageRequest(page,1,Sort.Direction.ASC,"country");
+        Pageable pageable = PageRequest.of(offset, 10,
+                Sort.by(Sort.Direction.ASC,"username", "byname"));
+//                Sort.by("contact").descending().and(Sort.by("username")));
+        Page<UserContact> page = repository.findByUser(user, pageable);
+//        page.getContent().forEach(System.out::println);
+//        pageable = page.nextPageable();
+        return page.getContent();
     }
 
     @Override

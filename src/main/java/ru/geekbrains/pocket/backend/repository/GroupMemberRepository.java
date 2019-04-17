@@ -1,6 +1,8 @@
 package ru.geekbrains.pocket.backend.repository;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import ru.geekbrains.pocket.backend.domain.db.Group;
@@ -22,7 +24,7 @@ public interface GroupMemberRepository extends MongoRepository<GroupMember, Obje
 
     List<GroupMember> findByGroup(Group group);
 
-    List<GroupMember> findByGroupId(ObjectId id);
+    Page<GroupMember> findByGroupId(ObjectId id, Pageable pageable);
 
     List<GroupMember> findByMember(User member);
 }

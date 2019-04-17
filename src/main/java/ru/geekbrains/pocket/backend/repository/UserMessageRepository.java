@@ -1,6 +1,8 @@
 package ru.geekbrains.pocket.backend.repository;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import ru.geekbrains.pocket.backend.domain.db.User;
@@ -18,6 +20,8 @@ public interface UserMessageRepository extends MongoRepository<UserMessage, Obje
     List<UserMessage> findByRecipient(User recipient);
 
     List<UserMessage> findBySenderOrRecipient(User sender, User recipient);
+
+    Page<UserMessage> findBySenderOrRecipient(User sender, User recipient, Pageable pageable);
 
     List<UserMessage> findBySenderAndReadFalse(User recipient);
 

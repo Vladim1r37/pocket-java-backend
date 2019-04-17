@@ -25,7 +25,6 @@ import ru.geekbrains.pocket.backend.enumeration.MessageType;
 import ru.geekbrains.pocket.backend.service.UserChatService;
 import ru.geekbrains.pocket.backend.service.UserMessageService;
 import ru.geekbrains.pocket.backend.service.UserService;
-import ru.geekbrains.pocket.backend.service.UserTokenService;
 
 import java.nio.charset.Charset;
 
@@ -50,8 +49,8 @@ public class UserMessageRestControllerTest {
     private WebApplicationContext webApplicationContext;
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserTokenService userTokenService;
+//    @Autowired
+//    private UserTokenService userTokenService;
     @Autowired
     private UserMessageService userMessageService;
 
@@ -127,7 +126,8 @@ public class UserMessageRestControllerTest {
         userService.delete(email);
         User user = userService.createUserAccount(email, password, username);
         try {
-            token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
+            token = userService.getNewToken(user);
+//            token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
             log.debug(token);
         } catch (Exception ex) {
             log.debug(ex.getMessage());

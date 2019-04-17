@@ -47,7 +47,7 @@ public class GroupMemberRestController {
     @GetMapping("/{id}/members") //Получить список участников группы
     public ResponseEntity<?> getGroupMembers(@PathVariable String id,
                                              @RequestParam("offset") Integer offset) {
-        List<GroupMember> groupMembers = groupMemberService.getGroupMembers(new ObjectId(id));
+        List<GroupMember> groupMembers = groupMemberService.getGroupMembers(new ObjectId(id), offset);
         if (groupMembers != null) {
             return new ResponseEntity<>(new GroupMemberCollection(offset, groupMembers), HttpStatus.OK);
         }

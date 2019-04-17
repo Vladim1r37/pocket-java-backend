@@ -2,6 +2,10 @@ package ru.geekbrains.pocket.backend.service.impl;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.pocket.backend.domain.db.User;
 import ru.geekbrains.pocket.backend.domain.db.UserBlacklist;
@@ -48,6 +52,14 @@ public class UserBlacklistServiceImpl implements UserBlacklistService {
     @Override
     public List<UserBlacklist> getUserBlacklists(User user) {
         return repository.findByUser(user);
+    }
+
+    @Override
+    public List<UserBlacklist> getUserBlacklists(User user, Integer offset) {
+        Pageable pageable = PageRequest.of(offset, 10,
+                Sort.by(Sort.Direction.ASC,"username", "banned"));
+        Page<UserBlacklist> page = repository.findByUser(user, pageable);
+        return page.getContent();
     }
 
     @Override

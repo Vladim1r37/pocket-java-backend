@@ -6,9 +6,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import ru.geekbrains.pocket.backend.domain.db.Privilege;
-import ru.geekbrains.pocket.backend.domain.db.Role;
 import ru.geekbrains.pocket.backend.domain.db.User;
+import ru.geekbrains.pocket.backend.enumeration.Privilege;
+import ru.geekbrains.pocket.backend.enumeration.Role;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,22 +19,22 @@ public class AuthenticationUser {
     //аутентификация в Spring
 
     public static void authWithoutPassword(User user) throws AuthenticationException {
-        List<Privilege> privileges = user.getRoles().stream()
-                .map(Role::getPrivileges)
-                .flatMap(Collection::stream).distinct().collect(Collectors.toList());
-        List<GrantedAuthority> authorities = privileges.stream().map(
-                p -> new SimpleGrantedAuthority(p.getName())).collect(Collectors.toList());
+//        List<Privilege> privileges = user.getRoles().stream()
+//                .map(Role::getPrivileges)
+//                .flatMap(Collection::stream).distinct().collect(Collectors.toList());
+        List<GrantedAuthority> authorities = Role.getPrivileges().stream().map(
+                p -> new SimpleGrantedAuthority(p.toString())).collect(Collectors.toList());
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     public static void authWithPassword(User user) throws AuthenticationException {
-        List<Privilege> privileges = user.getRoles().stream()
-                .map(Role::getPrivileges)
-                .flatMap(Collection::stream).distinct().collect(Collectors.toList());
-        List<GrantedAuthority> authorities = privileges.stream().map(
-                p -> new SimpleGrantedAuthority(p.getName())).collect(Collectors.toList());
+//        List<Privilege> privileges = user.getRoles().stream()
+//                .map(Role::getPrivileges)
+//                .flatMap(Collection::stream).distinct().collect(Collectors.toList());
+        List<GrantedAuthority> authorities = Role.getPrivileges().stream().map(
+                p -> new SimpleGrantedAuthority(p.toString())).collect(Collectors.toList());
 
         //https://www.baeldung.com/manually-set-user-authentication-spring-security
         Authentication authentication =
@@ -56,7 +56,7 @@ public class AuthenticationUser {
             collection.addAll(role.getPrivileges());
         }
         for (final Privilege item : collection) {
-            privileges.add(item.getName());
+            privileges.add(item.toString());
         }
 
         return privileges;

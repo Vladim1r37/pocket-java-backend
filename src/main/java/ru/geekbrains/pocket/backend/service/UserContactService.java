@@ -24,5 +24,7 @@ public interface UserContactService {
 
     List<UserContact> getUserContacts(User user);
 
+    List<UserContact> getUserContacts(User user, Integer offset);
+
     UserContact updateUserContact(UserContact userContact);
 }

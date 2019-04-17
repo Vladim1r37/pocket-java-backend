@@ -1,6 +1,8 @@
+*.class
 *.mmdb
-/target/
-/deploy/
+.env
+target/
+deploy/
 .gradle/
 /lib
 /local.properties

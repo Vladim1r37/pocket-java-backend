@@ -28,7 +28,7 @@ public interface GroupMemberService {
 
     List<GroupMember> getGroupMembers(Group group);
 
-    List<GroupMember> getGroupMembers(ObjectId id);
+    List<GroupMember> getGroupMembers(ObjectId id, Integer offset);
 
     List<GroupMember> getGroupMembers(User member);
 

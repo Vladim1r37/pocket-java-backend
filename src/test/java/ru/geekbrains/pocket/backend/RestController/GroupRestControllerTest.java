@@ -54,8 +54,8 @@ public class GroupRestControllerTest {
     private GroupService groupService;
     @Autowired
     private GroupMemberService groupMemberService;
-    @Autowired
-    private UserTokenService userTokenService;
+//    @Autowired
+//    private UserTokenService userTokenService;
 
     private MockMvc mockMvc;
     private Gson gson;
@@ -236,7 +236,8 @@ public class GroupRestControllerTest {
         userService.delete(email);
         User user = userService.createUserAccount(email, password, username);
         try {
-            token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
+            token = userService.getNewToken(user);
+            //token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
         } catch (Exception ex) {
             log.debug(ex.getMessage());
         }

@@ -22,6 +22,8 @@ public interface UserMessageService {
 
     List<UserMessage> getAllMessagesUser(User user);
 
+    List<UserMessage> getAllMessagesUser(User user, Integer offset);
+
     List<UserMessage> getMessagesBySender(User sender);
 
     List<UserMessage> getMessagesByRecipient(User recipient);

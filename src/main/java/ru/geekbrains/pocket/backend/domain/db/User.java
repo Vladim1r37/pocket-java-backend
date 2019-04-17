@@ -5,11 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.types.ObjectId;
-import org.jboss.aerogear.security.otp.api.Base32;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import ru.geekbrains.pocket.backend.util.validation.ValidEmail;
@@ -18,7 +16,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Collection;
 import java.util.Date;
 
 @Getter
@@ -39,8 +36,6 @@ public class User {
 
     @NotEmpty
     @JsonIgnore
-//    @Pattern(regexp = "^\\S*(?=\\S{6,})(?=\\S*[a-z])(?=\\S*[A-Z])(?=\\S*[\\d])\\S*$",
-//            message = "Enter a password containing 6 characters with at least one capital letter and one number.")
     @Size(min = 8, max = 32)
     private String password;
 
@@ -48,20 +43,21 @@ public class User {
     @Valid
     private UserProfile profile;
 
-    @DBRef
-    @NotNull
-    @Valid
-    @JsonIgnore
-    private Collection<Role> roles;
+    //@DBRef
+//    @Transient
+//    @NotNull
+//    //@Valid
+//    @JsonIgnore
+//    private Collection<Role> roles = Role.getRoleUser();
 
     @Field("created_at")
     private Date createdAt = new Date();
 
-    private boolean enabled = false;
+    //private boolean enabled = false;
 
-    private boolean isUsing2FA = false;
+    //private boolean isUsing2FA = false;
 
-    private String secret = Base32.random();
+    //private String secret = ""; //Base32.random();
 
     public User(String email, String password, UserProfile userProfile) {
         if (userProfile == null) userProfile = new UserProfile(email);
@@ -78,12 +74,12 @@ public class User {
         this.profile = new UserProfile(username);
     }
 
-    public User(String email, String password, String username, Collection<Role> roles) {
-        this.email = email;
-        this.password = password;
-        this.profile = new UserProfile(username);
-        this.roles = roles;
-    }
+//    public User(String email, String password, String username, Collection<Role> roles) {
+//        this.email = email;
+//        this.password = password;
+//        this.profile = new UserProfile(username);
+//        this.roles = roles;
+//    }
 
     @Override
     public String toString() {

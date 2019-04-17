@@ -2,6 +2,10 @@ package ru.geekbrains.pocket.backend.service.impl;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.pocket.backend.domain.db.Group;
 import ru.geekbrains.pocket.backend.domain.db.User;
@@ -10,7 +14,6 @@ import ru.geekbrains.pocket.backend.repository.UserChatRepository;
 import ru.geekbrains.pocket.backend.service.UserChatService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserChatServiceImpl implements UserChatService {
@@ -53,8 +56,24 @@ public class UserChatServiceImpl implements UserChatService {
     }
 
     @Override
+    public List<UserChat> getUserChats(Group group, Integer offset) {
+        Pageable pageable = PageRequest.of(offset, 10,
+                Sort.by(Sort.Direction.ASC,"username", "group"));
+        Page<UserChat> page = repository.findByGroup(group, pageable);
+        return page.getContent();
+    }
+
+    @Override
     public List<UserChat> getUserChats(User user) {
         return repository.findByUser(user);
+    }
+
+    @Override
+    public List<UserChat> getUserChats(User user, Integer offset) {
+        Pageable pageable = PageRequest.of(offset, 10,
+                Sort.by(Sort.Direction.ASC,"username", "direct"));
+        Page<UserChat> page = repository.findByUser(user, pageable);
+        return page.getContent();
     }
 
     @Override

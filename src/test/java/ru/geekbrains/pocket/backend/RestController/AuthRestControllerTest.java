@@ -1,10 +1,6 @@
 package ru.geekbrains.pocket.backend.RestController;
 
 import com.google.gson.Gson;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,11 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.geekbrains.pocket.backend.controller.rest.AuthRestController;
 import ru.geekbrains.pocket.backend.domain.db.User;
 import ru.geekbrains.pocket.backend.service.UserService;
-import ru.geekbrains.pocket.backend.util.ConverterJSON;
-import ru.geekbrains.pocket.backend.util.validation.ValidEmail;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.nio.charset.Charset;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -96,8 +88,7 @@ public class AuthRestControllerTest {
                 .post("/auth/login")
                 .content(gson.toJson(loginRequest))
                 //.param("lastname",'lastname')
-                //.with(SecurityRequestPostProcessors.userDetailsService("a@mail.ru")) // добавляем поддержку Security
-                .contentType(contentType)
+               .contentType(contentType)
         ;
 
         ResultActions result = mockMvc.perform(request)

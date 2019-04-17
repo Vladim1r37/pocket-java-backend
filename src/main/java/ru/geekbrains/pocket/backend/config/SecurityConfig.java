@@ -14,8 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.token.ClientKeyGenerator;
-import org.springframework.security.oauth2.client.token.DefaultClientKeyGenerator;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
@@ -57,6 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
         web.httpFirewall(allowHttpMethodsFirewall());
+        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui",
+                "/swagger-resources/**", "/swagger-ui.html", "/webjars/**");
+        //"/swagger-resources", "/configuration/**", "/configuration/security",
     }
 
     @Override
@@ -69,39 +70,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .cors().and()
             .csrf().disable()   //Межсайтовая подделка запроса
+                .authorizeRequests()
+             .and()
                 //.anonymous().disable()
                 .exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
             .and()
-//                .authenticationProvider(authenticationProvider())
-//                .addFilterBefore(new AuthenticationFilter(authenticationManager()), BasicAuthenticationFilter.class)
-//                .addFilterBefore(new ManagementEndpointAuthenticationFilter(authenticationManager()), BasicAuthenticationFilter.class)
                 .addFilterAfter(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
             //более конкретные правила должны стоять первыми, а затем более общие
                 .antMatchers("/auth/**").permitAll() //rest
                 .antMatchers("/socket/**").permitAll() //websocket
-                //.antMatchers("/test/**").permitAll() //websocket
-                .antMatchers("/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/swagger-ui.html","/swagger-ui/**","/swagger-resources/**","/v2/api-docs/**").permitAll() //swagger
+                //.antMatchers("/resources/**", "/webjars/**", "/static/**").permitAll() //web
+                //.antMatchers("/**").hasAnyRole("ADMIN", "USER")
                 //.anyRequest().hasAuthority("READ_PRIVILEGE")
                 .anyRequest().authenticated()
             .and()
             .formLogin()
-                //.passwordParameter("")
-                .loginPage("/auth/login")
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureHandler(customAuthenticationFailureHandler)
                 .permitAll()
+            .and()
+            .httpBasic()
             .and()
             .logout()
                 .logoutSuccessHandler(customLogoutSuccessHandler)
                 .invalidateHttpSession(false)
                 .deleteCookies("JSESSIONID")
                 .permitAll()
-//            .and() //не нужно из-за websocket http://qaru.site/questions/10468988/failed-to-create-websocket-connection-when-spring-security-is-on
-//                .sessionManagement() //https://www.baeldung.com/spring-security-session
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
 ////        https://www.baeldung.com/spring-security-websockets
                 .headers().frameOptions().sameOrigin()
@@ -131,11 +129,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {
         return new JwtAuthenticationFilter();
-    }
-
-    @Bean
-    public ClientKeyGenerator clientKeyGenerator(){
-        return new DefaultClientKeyGenerator();
     }
 
 }

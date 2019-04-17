@@ -21,7 +21,6 @@ import ru.geekbrains.pocket.backend.domain.pub.UserContactCollection;
 import ru.geekbrains.pocket.backend.domain.pub.UserContactPub;
 import ru.geekbrains.pocket.backend.service.UserContactService;
 import ru.geekbrains.pocket.backend.service.UserService;
-import ru.geekbrains.pocket.backend.service.UserTokenService;
 
 import java.nio.charset.Charset;
 
@@ -48,8 +47,8 @@ public class ContactRestControllerTest {
     private UserService userService;
     @Autowired
     private UserContactService userContactService;
-    @Autowired
-    private UserTokenService userTokenService;
+//    @Autowired
+//    private UserTokenService userTokenService;
 
     private MockMvc mockMvc;
     private Gson gson;
@@ -196,7 +195,8 @@ public class ContactRestControllerTest {
         userService.delete(email);
         User user = userService.createUserAccount(email, password, username);
         try {
-            token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
+            token = userService.getNewToken(user);
+//            token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
         } catch (Exception ex) {
             log.debug(ex.getMessage());
         }

@@ -2,6 +2,10 @@ package ru.geekbrains.pocket.backend.service.impl;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.pocket.backend.domain.db.User;
 import ru.geekbrains.pocket.backend.domain.db.UserMessage;
@@ -55,6 +59,14 @@ public class UserMessageServiceImpl implements UserMessageService {
     @Override
     public List<UserMessage> getAllMessagesUser(User user) {
         return repository.findBySenderOrRecipient(user, user);
+    }
+
+    @Override
+    public List<UserMessage> getAllMessagesUser(User user, Integer offset) {
+        Pageable pageable = PageRequest.of(offset, 100,
+                Sort.by(Sort.Direction.ASC,"id"));
+        Page<UserMessage> page = repository.findBySenderOrRecipient(user, user, pageable);
+        return page.getContent();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ru.geekbrains.pocket.backend.controller.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.Gson;
 import com.mongodb.lang.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.bson.types.ObjectId;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -125,7 +125,7 @@ public class GroupRestController {
                                          HttpServletRequest request) {
         InvitationCodeRequest invitationCodeRequest = null;
         try {
-            invitationCodeRequest = new ObjectMapper().readValue(request.getReader(), InvitationCodeRequest.class);
+            invitationCodeRequest = new Gson().fromJson(request.getReader(), InvitationCodeRequest.class);
         } catch (IOException e) {
             log.debug(e.getMessage());
         }

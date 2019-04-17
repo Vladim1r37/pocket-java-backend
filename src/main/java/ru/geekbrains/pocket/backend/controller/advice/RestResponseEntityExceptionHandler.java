@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.mail.MailAuthenticationException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,17 +32,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         log.error("404 Status Code", ex);
         GenericResponse bodyOfResponse = new GenericResponse(
                 messages.getMessage("message.userNotFound", null, request.getLocale()), "UserNotFound");
-
-        return handleExceptionInternal(
-                ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-    }
-
-    @ExceptionHandler({MailAuthenticationException.class})
-    public ResponseEntity<Object> handleMail(RuntimeException ex, WebRequest request) {
-        log.error("500 Status Code", ex);
-        GenericResponse bodyOfResponse = new GenericResponse(
-                messages.getMessage(
-                        "message.email.config.error", null, request.getLocale()), "MailError");
 
         return handleExceptionInternal(
                 ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);

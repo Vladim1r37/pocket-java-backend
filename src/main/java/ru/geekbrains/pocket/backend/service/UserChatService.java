@@ -23,7 +23,11 @@ public interface UserChatService {
 
     List<UserChat> getUserChats(Group group);
 
+    List<UserChat> getUserChats(Group group, Integer offset);
+
     List<UserChat> getUserChats(User user);
+
+    List<UserChat> getUserChats(User user, Integer offset);
 
     void deleteAllUserChats();
 

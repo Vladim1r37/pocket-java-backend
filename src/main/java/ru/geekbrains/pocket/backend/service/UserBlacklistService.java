@@ -20,5 +20,7 @@ public interface UserBlacklistService {
 
     List<UserBlacklist> getUserBlacklists(User user);
 
+    List<UserBlacklist> getUserBlacklists(User user, Integer offset);
+
     UserBlacklist updateUserBlacklist(UserBlacklist userBlacklist);
 }

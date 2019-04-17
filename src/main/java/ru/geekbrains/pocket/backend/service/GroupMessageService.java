@@ -25,7 +25,7 @@ public interface GroupMessageService {
 
     List<GroupMessage> getMessages(Group group);
 
-    List<GroupMessage> getMessages(ObjectId id);
+    List<GroupMessage> getMessages(ObjectId id, Integer offset);
 
     GroupMessage updateMessage(GroupMessage groupMessage);
 

@@ -16,7 +16,6 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.geekbrains.pocket.backend.controller.rest.AccountRestController;
 import ru.geekbrains.pocket.backend.domain.db.User;
 import ru.geekbrains.pocket.backend.service.UserService;
-import ru.geekbrains.pocket.backend.service.UserTokenService;
 
 import java.nio.charset.Charset;
 
@@ -41,8 +40,9 @@ public class AccountRestControllerTest {
     private WebApplicationContext webApplicationContext;
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserTokenService userTokenService;
+//    @Autowired
+//    private UserTokenService userTokenService;
+
     private MockMvc mockMvc;
     private Gson gson;
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -195,7 +195,8 @@ public class AccountRestControllerTest {
         userService.delete(email);
         User user = userService.createUserAccount(email, password, username);
         try {
-            token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
+            token = userService.getNewToken(user);
+//            token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
         } catch (Exception ex) {
             log.debug(ex.getMessage());
         }

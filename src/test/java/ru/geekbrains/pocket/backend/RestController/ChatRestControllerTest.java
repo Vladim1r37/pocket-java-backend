@@ -24,7 +24,6 @@ import ru.geekbrains.pocket.backend.domain.pub.UserChatCollection;
 import ru.geekbrains.pocket.backend.domain.pub.UserChatPub;
 import ru.geekbrains.pocket.backend.service.UserChatService;
 import ru.geekbrains.pocket.backend.service.UserService;
-import ru.geekbrains.pocket.backend.service.UserTokenService;
 
 import java.nio.charset.Charset;
 
@@ -47,8 +46,8 @@ public class ChatRestControllerTest {
     private WebApplicationContext webApplicationContext;
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserTokenService userTokenService;
+//    @Autowired
+//    private UserTokenService userTokenService;
     @Autowired
     private UserChatService userChatService;
 
@@ -116,7 +115,8 @@ public class ChatRestControllerTest {
         userService.delete(email);
         User user = userService.createUserAccount(email, password, username);
         try {
-            token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
+            token = userService.getNewToken(user);
+//            token = userTokenService.getValidToken(user, "0.0.0.0").getToken();
         } catch (Exception ex) {
             log.debug(ex.getMessage());
         }

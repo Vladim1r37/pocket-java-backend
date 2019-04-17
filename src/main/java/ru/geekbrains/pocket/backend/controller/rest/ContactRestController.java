@@ -45,7 +45,7 @@ public class ContactRestController {
                                    HttpServletRequest request){
         User user = httpRequestComponent.getUserFromToken(request);
         if (user != null) {
-            List<UserContact> userContacts = userContactService.getUserContacts(user);
+            List<UserContact> userContacts = userContactService.getUserContacts(user, offset);
             return new ResponseEntity<>(
                     new UserContactCollection(user, offset, userContacts), HttpStatus.OK);
         }

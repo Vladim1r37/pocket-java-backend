@@ -1,6 +1,8 @@
 package ru.geekbrains.pocket.backend.repository;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import ru.geekbrains.pocket.backend.domain.db.Group;
@@ -17,7 +19,11 @@ public interface UserChatRepository extends MongoRepository<UserChat, ObjectId> 
 
     List<UserChat> findByGroup(Group group);
 
+    Page<UserChat> findByGroup(Group group, Pageable pageable);
+
     List<UserChat> findByUser(User user);
+
+    Page<UserChat> findByUser(User user, Pageable pageable);
 
     List<UserChat> findByUserId(ObjectId id);
 

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -7,15 +6,15 @@
 
     <groupId>ru.geekbrains</groupId>
     <artifactId>pocket.backend</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Pocket Java Backend</name>
-    <description>Pocket Java Backend Application</description>
+    <name>PocketJavaBackend</name>
+    <description>Pocket Java Backend</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.2.RELEASE</version>
+        <version>2.1.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -25,12 +24,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
-        <spring-cloud.version>Greenwich.RC2</spring-cloud.version>
-        <aerogear.version>1.0.0</aerogear.version>
-        <passay.version>1.0</passay.version>
-        <guava.version>20.0</guava.version>
-        <uap-java.version>1.4.0</uap-java.version>
-        <geoip2.version>2.12.0</geoip2.version>
+        <start-class>ru.geekbrains.pocket.backend.PocketBackendApplication</start-class>
+        <swagger.version>2.9.2</swagger.version>
     </properties>
 
     <dependencies>
@@ -54,25 +49,8 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-hateoas</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-data-redis</artifactId>-->
-        <!--</dependency>-->
 
         <!-- DB dependencies -->
         <dependency>
@@ -80,9 +58,8 @@
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-messaging</artifactId>
         </dependency>
 
         <!-- Spring Security -->
@@ -94,10 +71,6 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-messaging</artifactId>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.thymeleaf.extras</groupId>-->
-        <!--            <artifactId>thymeleaf-extras-springsecurity4</artifactId>-->
-        <!--        </dependency>-->
 
         <!-- test -->
         <dependency>
@@ -109,35 +82,6 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!-- 2fa -->
-        <dependency>
-            <groupId>org.jboss.aerogear</groupId>
-            <artifactId>aerogear-otp-java</artifactId>
-            <version>${aerogear.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- Password Validation -->
-        <dependency>
-            <groupId>org.passay</groupId>
-            <artifactId>passay</artifactId>
-            <version>${passay.version}</version>
-        </dependency>
-
-        <!-- maxmind dependency -->
-        <dependency>
-            <groupId>com.maxmind.geoip2</groupId>
-            <artifactId>geoip2</artifactId>
-            <version>${geoip2.version}</version>
-        </dependency>
-
-        <!-- User Agent parser -->
-        <dependency>
-            <groupId>com.github.ua-parser</groupId>
-            <artifactId>uap-java</artifactId>
-            <version>${uap-java.version}</version>
         </dependency>
 
         <!-- Token & JWT -->
@@ -153,21 +97,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
-<!--            <groupId>org.apache.logging.log4j</groupId>-->
-<!--            <artifactId>log4j-api</artifactId>-->
-<!--            <version>2.11.1</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.logging.log4j</groupId>-->
-<!--            <artifactId>log4j-core</artifactId>-->
-<!--            <version>2.11.1</version>-->
-<!--        </dependency>-->
-        <!-- slf4j -->
-<!--        <dependency>-->
-<!--        <groupId>org.slf4j</groupId>-->
-<!--        <artifactId>slf4j-jdk14</artifactId>-->
-<!--        <version>1.7.25</version>-->
-<!--        </dependency>-->
 
         <!-- Lombok -->
         <dependency>
@@ -184,34 +113,21 @@
             <version>2.8.5</version>
         </dependency>
 
+        <!-- swagger -->
         <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.10.1</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
         </dependency>
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <scm>
-        <connection>scm:git:ssh:git@github.com:siblis/pocket-java-backend.git</connection>
-        <developerConnection>scm:git:ssh:git@github.com:siblis/pocket-java-backend.git</developerConnection>
-        <tag>HEAD</tag>
-        <url>https://github.com/siblis/pocket-java-backend.git</url>
-    </scm>
-
     <build>
-        <finalName>${project.name}-${project.version}</finalName>
+        <finalName>${project.name}</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
@@ -223,25 +139,19 @@
             </resource>
         </resources>
         <plugins>
-<!--            http://java-online.ru/maven-plugins.xhtml#maven-compiler-plugin-->
-<!--            https://habr.com/ru/post/310738/-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <!--плагин для компиляции проекта-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
             <!--плагин для копирования файлов ресурсов в директорию target-->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>jks</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
@@ -251,7 +161,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>
-                                ${basedir}/target/resources
+                                ${basedir}/target/classes
                             </outputDirectory>
                             <resources>
                                 <resource>
@@ -268,16 +178,7 @@
                                         <include>**/*.properties</include>
                                     </includes>
                                 </resource>
-<!--                                <resource>-->
-<!--                                    <directory>src/main/resources/images</directory>-->
-<!--                                    <includes>-->
-<!--                                        <include>**/*.png</include>-->
-<!--                                    </includes>-->
-<!--                                </resource>-->
                             </resources>
-                            <nonFilteredFileExtensions>
-                                <nonFilteredFileExtension>jks</nonFilteredFileExtension>
-                            </nonFilteredFileExtensions>
                         </configuration>
                     </execution>
                 </executions>
@@ -313,34 +214,29 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <classpathLayoutType>simple</classpathLayoutType>
-                            <mainClass>ru.geekbrains.pocket.backend.PocketBackendApplication</mainClass>
+                            <mainClass>${start-class}</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                         <manifestEntries>
                             <Version>${project.build}</Version>
-                            <Implementation-Version>${project.version}-${buildNumber}</Implementation-Version>
-                            <Implementation-Build>$\{buildNumber}</Implementation-Build>
                         </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
             <!--плагин для формирования war-файла и манифеста-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <Implementation-Build>$\{buildNumber}</Implementation-Build>
-                        </manifestEntries>
-                    </archive>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-war-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
+<!--                        </manifest>-->
+<!--                    </archive>-->
+<!--                    <failOnMissingWebXml>false</failOnMissingWebXml>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
             <!--плагин для удаления ненужных артефактов после завершения сборки-->
             <!--Например, если приложение упаковано в файл WAR, и вы хотите удалить все файлы JAR-->
             <!--(потому что они дублируются внутри файла WAR) в результате остаётся только WAR файл-->
@@ -369,34 +265,6 @@
 <!--                    </execution>-->
 <!--                </executions>-->
 <!--            </plugin>-->
-            <!--плагин для генерации номера сборки-->
-<!--            http://www.mojohaus.org/buildnumber-maven-plugin/usage.html-->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-<!--                    doCheck — если true, то проект не скомпилируется пока в нем есть локальные изменения-->
-<!--                    doUpdate — позволяет Maven обновить Вашу текущую ревизию-->
-                    <doCheck>true</doCheck>
-                    <doUpdate>true</doUpdate>
-                    <revisionOnScmFailure>true</revisionOnScmFailure>
-                    <shortRevisionLength>5</shortRevisionLength>
-                    <format>{0}-{1,date,yyyyMMdd}</format>
-                    <items>
-                        <item>${project.version}</item>
-                        <item>timestamp</item>
-                    </items>
-                </configuration>
-            </plugin>
             <!--плагин для запуска тестов-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -421,13 +289,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-        </repository>
-    </repositories>
 
 </project>

@@ -39,7 +39,7 @@ public class BlacklistRestController {
                                    HttpServletRequest request){
         User user = httpRequestComponent.getUserFromToken(request);
         if (user != null) {
-            List<UserBlacklist> userBlacklists = userBlacklistService.getUserBlacklists(user);
+            List<UserBlacklist> userBlacklists = userBlacklistService.getUserBlacklists(user, offset);
             return new ResponseEntity<>(
                     new UserBlacklistCollection(user, offset, userBlacklists), HttpStatus.OK);
         }

@@ -3,12 +3,9 @@ package ru.geekbrains.pocket.backend.service;
 import com.mongodb.MongoWriteException;
 import org.bson.types.ObjectId;
 import org.springframework.dao.DuplicateKeyException;
-import ru.geekbrains.pocket.backend.domain.db.Role;
 import ru.geekbrains.pocket.backend.domain.db.User;
-import ru.geekbrains.pocket.backend.domain.db.UserContact;
 import ru.geekbrains.pocket.backend.exception.InvalidOldPasswordException;
 import ru.geekbrains.pocket.backend.exception.UserAlreadyExistException;
-import ru.geekbrains.pocket.backend.resource.UserResource;
 
 import java.util.List;
 
@@ -29,15 +26,13 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    List<UserResource> getAllUserResources();
-
     User getUserById(ObjectId id);
 
     User getUserByEmail(String email);
 
     User getUserByUsername(String userName);
 
-    List<Role> getRolesByUsername(String userName);
+    //List<Role> getRolesByUsername(String userName);
 
     User insert(User user);
 
@@ -49,5 +44,11 @@ public interface UserService {
     User validateUser(ObjectId id);
 
     User validateUser(String username);
+
+    boolean isValidToken(String token, User user);
+
+    String getEmailFromToken(String token);
+
+    String getNewToken(User user);
 
 }

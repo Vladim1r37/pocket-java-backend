@@ -13,9 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ru.geekbrains.pocket.backend.domain.db.Privilege;
-import ru.geekbrains.pocket.backend.domain.db.Role;
 import ru.geekbrains.pocket.backend.domain.db.User;
+import ru.geekbrains.pocket.backend.enumeration.Role;
 import ru.geekbrains.pocket.backend.security.MyUserDetailsService;
 
 import javax.servlet.FilterChain;
@@ -24,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,11 +40,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     //---
     public static void authWithoutPassword(User user) throws AuthenticationException {
-        List<Privilege> privileges = user.getRoles().stream()
-                .map(Role::getPrivileges)
-                .flatMap(Collection::stream).distinct().collect(Collectors.toList());
-        List<GrantedAuthority> authorities = privileges.stream().map(
-                p -> new SimpleGrantedAuthority(p.getName())).collect(Collectors.toList());
+//        List<Privilege> privileges = user.getRoles().stream()
+//                .map(Role::getPrivileges)
+//                .flatMap(Collection::stream).distinct().collect(Collectors.toList());
+        List<GrantedAuthority> authorities = Role.getPrivileges().stream().map(
+                p -> new SimpleGrantedAuthority(p.toString())).collect(Collectors.toList());
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
