@@ -13,6 +13,7 @@ import ru.geekbrains.pocket.backend.domain.pub.MessagePub;
 import ru.geekbrains.pocket.backend.service.UserMessageService;
 import ru.geekbrains.pocket.backend.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Log4j2
@@ -24,31 +25,50 @@ public class UserMessageRestController {
     private UserService userService;
     @Autowired
     private UserMessageService userMessageService;
+    @Autowired
+    private HttpRequestComponent httpRequestComponent;
 
     @GetMapping("/{idUser}/messages") //Получить историю переписки
-    public ResponseEntity<?> getMessages(@PathVariable String idUser, @RequestParam("offset") Integer offset) {
-        User user = userService.getUserById(new ObjectId(idUser));
-        List<UserMessage> messages;
-        if (user != null) {
-            messages = userMessageService.getAllMessagesUser(user, offset);
+    //пользователь от которого пришел запрос может получить историю переписки только в которой он учавствовал
+    public ResponseEntity<?> getMessages(@PathVariable String idUser,
+                                         @RequestParam("offset") Integer offset,
+                                         HttpServletRequest request) {
+        User currentUser = httpRequestComponent.getUserFromToken(request);
+        if (currentUser != null) {
+            User secondUser = userService.getUserById(new ObjectId(idUser));
+            List<UserMessage> messages;
+            if (secondUser != null) {
+                messages = userMessageService.getAllMessagesUser(currentUser, secondUser, offset);
 
-            MessageCollection messageCollection = new MessageCollection();
-            messageCollection.setUserMessages(offset, messages);
-            return new ResponseEntity<>(messageCollection, HttpStatus.OK);
+                MessageCollection messageCollection = new MessageCollection();
+                messageCollection.setUserMessages(offset, messages);
+                return new ResponseEntity<>(messageCollection, HttpStatus.OK);
+            }
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-}
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @GetMapping("/{idUser}/messages/{idMessage}") //Получить конкретное сообщение
-    public ResponseEntity<?> findMessage(@PathVariable String idUser, @PathVariable String idMessage) {
-        UserMessage message = userMessageService.getMessage(new ObjectId(idMessage));
-        if (message != null && message.getSender() != null && idUser != null && !idUser.equals("")) {
-            if (idUser.equals(message.getSender().getId().toString())
-                    || idUser.equals(message.getRecipient().getId().toString()))
-                return new ResponseEntity<>(new MessagePub(message), HttpStatus.OK);
+    public ResponseEntity<?> findMessage(@PathVariable String idUser,
+                                         @PathVariable String idMessage,
+                                         HttpServletRequest request) {
+        User currentUser = httpRequestComponent.getUserFromToken(request);
+        if (currentUser != null) {
+            String idCurrentUser = currentUser.getId().toString();
+            UserMessage message = userMessageService.getMessage(new ObjectId(idMessage));
+            if (message != null && message.getSender() != null && idUser != null && !idUser.equals("")) {
+                if (idUser.equals(message.getSender().getId().toString())
+                        || idUser.equals(message.getRecipient().getId().toString()))
+                    //TODO проверка что текущий юзер получает сообщение в котором он отправитель или получатель
+                    if (idCurrentUser.equals(message.getSender().getId().toString())
+                            || idCurrentUser.equals(message.getRecipient().getId().toString()))
+                        return new ResponseEntity<>(new MessagePub(message), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

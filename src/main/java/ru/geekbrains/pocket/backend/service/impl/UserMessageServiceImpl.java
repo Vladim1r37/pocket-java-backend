@@ -62,10 +62,10 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     @Override
-    public List<UserMessage> getAllMessagesUser(User user, Integer offset) {
-        Pageable pageable = PageRequest.of(offset, 100,
+    public List<UserMessage> getAllMessagesUser(User firstUser, User secondUser,  Integer offset) {
+        Pageable pageable = PageRequest.of(offset, 50,
                 Sort.by(Sort.Direction.ASC,"id"));
-        Page<UserMessage> page = repository.findBySenderOrRecipient(user, user, pageable);
+        Page<UserMessage> page = repository.getCorrespondence(firstUser.getId(), secondUser.getId(), pageable);
         return page.getContent();
     }
 
